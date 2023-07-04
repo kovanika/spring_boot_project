@@ -1,37 +1,32 @@
 package com.example.spring_boot_project;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.*;
+
 @RestController
 public class UploadController {
+    @RequestMapping(value = "/files", method = RequestMethod.POST, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public String saveFile(@RequestParam String name, @RequestParam String email,
+                                           @RequestParam MultipartFile document) throws IOException {
 
-
-    @RequestMapping(value = "/upload", method = RequestMethod.POST,
-            consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-
-    public String FileUpload( @RequestParam("file") MultipartFile file) throws IOException {
-    if(!file.isEmpty()) {
-        byte[] bytes = file.getBytes();
-        String rootPath = "C://upload//";
-        File dir = new File(rootPath + File.separator + "loadFiles");
-        if (!dir.exists()) {
-            dir.mkdirs();
+        File file = new File("C:\\Users\\user\\Desktop\\" + document.getOriginalFilename());
+        try(OutputStream os = new FileOutputStream(file)){
+            os.write(document.getBytes());
         }
-        File uploadedFile = new File(dir.getAbsolutePath() + File.separator + file.getOriginalFilename());
-        BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(uploadedFile));
-        stream.write(bytes);
-        stream.flush();
-        stream.close();
-        return "Успех";
+        catch (Exception e){
+            return "Exception!";
+        }
+        return "file.getFile()";
     }
-    else
-        return "Пустой файл!";
+
+    @GetMapping
+    public FileEntity hello(){
+        FileEntity file = new FileEntity();
+        file.setName("name");
+        file.setEmail("email");
+        return file;
     }
-    }
+}
