@@ -18,20 +18,22 @@ public class UploadController {
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 
     public String FileUpload( @RequestParam("file") MultipartFile file) throws IOException {
-
-                byte[] bytes = file.getBytes();
-                String rootPath = "C://upload//";
-                File dir = new File(rootPath + File.separator + "loadFiles");
-                if (!dir.exists()) {
-                    dir.mkdirs();
-                }
-                File uploadedFile = new File(dir.getAbsolutePath() + File.separator + file.getOriginalFilename());
-                BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(uploadedFile));
-                stream.write(bytes);
-                stream.flush();
-                stream.close();
-                return "Success";
-
+    if(!file.isEmpty()) {
+        byte[] bytes = file.getBytes();
+        String rootPath = "C://upload//";
+        File dir = new File(rootPath + File.separator + "loadFiles");
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+        File uploadedFile = new File(dir.getAbsolutePath() + File.separator + file.getOriginalFilename());
+        BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(uploadedFile));
+        stream.write(bytes);
+        stream.flush();
+        stream.close();
+        return "Успех";
+    }
+    else
+        return "Пустой файл!";
     }
 
     }
