@@ -12,7 +12,7 @@ public class FileSystemDocumentRepository implements DocumentRepository{
     @Override
     public void add(FileEntity fileEntity) throws IOException {
         File file = new File("C:\\Users\\user\\Desktop\\files\\" + fileEntity.getOriginalName());
-        Files.write(Paths.get(file.getAbsolutePath() + "." + file.getName()), fileEntity.getFile());
+        Files.write(Paths.get(file.getAbsolutePath()), fileEntity.getFile());
     }
 
     @Override
