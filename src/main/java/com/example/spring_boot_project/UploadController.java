@@ -11,13 +11,22 @@ import java.io.*;
 @RestController
 public class UploadController {
     private static final Logger logger = LoggerFactory.getLogger(UploadController.class);
+
+    private DocumentRepository documentRepository = new FileSystemDocumentRepository();
     @RequestMapping(value = "/files", method = RequestMethod.POST, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public String saveFile(@RequestParam String name, @RequestParam String email,
                                            @RequestParam MultipartFile document) {
 
-        File file = new File("C:\\Users\\user\\Desktop\\" + document.getOriginalFilename());
-        try(OutputStream os = new FileOutputStream(file)){
-            os.write(document.getBytes());
+
+
+        try{
+            FileEntity fileEntity = new FileEntity();
+            fileEntity.setFile(document.getBytes());
+            fileEntity.setName(name);
+            fileEntity.setOriginalName(document.getOriginalFilename());
+            fileEntity.setEmail(email);
+
+            documentRepository.add(fileEntity);
         }
         catch (IOException e){
             logger.error(e.getMessage(), e);

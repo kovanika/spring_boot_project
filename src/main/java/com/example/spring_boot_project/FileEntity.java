@@ -7,8 +7,18 @@ public class FileEntity {
 
     }
     private String name;
+    private String originalName;
     private String email;
-    private MultipartFile file;
+
+    public String getOriginalName() {
+        return originalName;
+    }
+
+    public void setOriginalName(String originalName) {
+        this.originalName = originalName;
+    }
+
+    private byte[] file;
 
     public void setName(String name) {
         this.name = name;
@@ -26,11 +36,11 @@ public class FileEntity {
         return email;
     }
 
-    public MultipartFile getFile() {
+    public byte[] getFile() {
         return file;
     }
 
-    public void setFile(MultipartFile file) {
+    public void setFile(byte[] file) {
         this.file = file;
     }
 }
