@@ -1,11 +1,13 @@
 package com.example.spring_boot_project;
 
+import javax.naming.OperationNotSupportedException;
+import java.io.IOException;
 import java.util.List;
 
 public class MinIODocumentRepository implements  DocumentRepository{
     @Override
-    public void add(FileEntity file) {
-
+    public String add(FileEntity file) throws OperationNotSupportedException {
+        throw new OperationNotSupportedException();
     }
 
     @Override
@@ -19,7 +21,7 @@ public class MinIODocumentRepository implements  DocumentRepository{
     }
 
     @Override
-    public List<FileEntity> query(FileSpecification fileSpecification) {
+    public List<FileEntity> query() throws IOException {
         return null;
     }
 }

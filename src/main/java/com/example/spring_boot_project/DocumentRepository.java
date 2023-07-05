@@ -1,10 +1,12 @@
 package com.example.spring_boot_project;
 
+import javax.naming.OperationNotSupportedException;
+import java.io.IOException;
 import java.util.List;
 
 public interface DocumentRepository {
-    void add(FileEntity file);
+    String add(FileEntity file) throws IOException, OperationNotSupportedException;
     void update(FileEntity file);
     void remove(FileEntity file);
-    List<FileEntity> query(FileSpecification fileSpecification);
+    List<FileEntity> query() throws IOException;
 }
