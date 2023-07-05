@@ -21,7 +21,12 @@ public class DBDocumentRepository implements DocumentRepository{
     }
 
     @Override
-    public List<FileEntity> query() throws IOException {
+    public List<FileEntity> queryAll() throws IOException {
+        return null;
+    }
+
+    @Override
+    public FileEntity query(String path) throws IOException {
         return null;
     }
 }

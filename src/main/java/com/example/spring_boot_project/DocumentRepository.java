@@ -8,5 +8,6 @@ public interface DocumentRepository {
     String add(FileEntity file) throws IOException, OperationNotSupportedException;
     void update(FileEntity file);
     void remove(FileEntity file);
-    List<FileEntity> query() throws IOException;
+    List<FileEntity> queryAll() throws IOException;
+    FileEntity query(String path) throws IOException;
 }
