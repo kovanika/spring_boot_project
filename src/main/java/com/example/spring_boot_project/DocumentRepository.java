@@ -7,5 +7,5 @@ public interface DocumentRepository {
     void add(FileEntity file) throws IOException;
     void update(FileEntity file);
     void remove(FileEntity file);
-    List<FileEntity> query(FileSpecification fileSpecification);
+    List<FileEntity> query() throws IOException;
 }
