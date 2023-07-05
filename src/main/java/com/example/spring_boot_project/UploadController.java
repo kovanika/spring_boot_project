@@ -6,7 +6,10 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.naming.OperationNotSupportedException;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 public class UploadController {
@@ -15,30 +18,18 @@ public class UploadController {
     private DocumentRepository documentRepository = new FileSystemDocumentRepository();
     @RequestMapping(value = "/files", method = RequestMethod.POST, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public String saveFile(@RequestParam String name, @RequestParam String email,
-                                           @RequestParam MultipartFile document) {
+                                           @RequestParam MultipartFile document) throws IOException, OperationNotSupportedException {
+        FileEntity fileEntity = new FileEntity();
+        fileEntity.setFile(document.getBytes());
+        fileEntity.setName(name);
+        fileEntity.setOriginalName(document.getOriginalFilename());
+        fileEntity.setEmail(email);
 
-
-
-        try{
-            FileEntity fileEntity = new FileEntity();
-            fileEntity.setFile(document.getBytes());
-            fileEntity.setName(name);
-            fileEntity.setOriginalName(document.getOriginalFilename());
-            fileEntity.setEmail(email);
-
-            documentRepository.add(fileEntity);
-        }
-        catch (IOException e){
-            logger.error(e.getMessage(), e);
-        }
-        return "file.getFile()";
+        return documentRepository.add(fileEntity);
     }
 
-    @GetMapping
-    public FileEntity hello(){
-        FileEntity file = new FileEntity();
-        file.setName("name");
-        file.setEmail("email");
-        return file;
+    @GetMapping(value = "/files", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public List<FileEntity> getFiles() throws IOException {
+        return documentRepository.query();
     }
 }
