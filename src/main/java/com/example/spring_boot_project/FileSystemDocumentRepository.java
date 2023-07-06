@@ -29,7 +29,7 @@ public class FileSystemDocumentRepository implements DocumentRepository{
     }
 
     @Override
-    public List<FileEntity> query() throws IOException {
+    public List<FileEntity> queryAll() throws IOException {
         List<String> paths;
         List<byte[]> byteArrays = new ArrayList<byte[]>();
         try(Stream<Path> stream = Files.walk(Paths.get("C:\\Users\\user\\Desktop\\files\\"))){
@@ -47,4 +47,15 @@ public class FileSystemDocumentRepository implements DocumentRepository{
         }
         return fileEntityList;
     }
+
+    @Override
+    public FileEntity query(String path) throws IOException {
+        FileEntity fileEntity = new FileEntity();
+        fileEntity.setOriginalName(path);
+        fileEntity.setFile(Files.readAllBytes(Paths.get(path)));
+
+        return fileEntity;
+    }
+
+
 }

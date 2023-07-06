@@ -8,7 +8,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.naming.OperationNotSupportedException;
 import java.io.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -28,8 +27,16 @@ public class UploadController {
         return documentRepository.add(fileEntity);
     }
 
+    @RequestMapping(value = "/", method = RequestMethod.POST, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public FileEntity GetOneFile(@RequestParam String path) throws IOException {
+
+        return documentRepository.query(path);
+
+
+    }
+
     @GetMapping(value = "/files", produces = {MediaType.APPLICATION_JSON_VALUE})
     public List<FileEntity> getFiles() throws IOException {
-        return documentRepository.query();
+        return documentRepository.queryAll();
     }
 }
