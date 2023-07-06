@@ -14,9 +14,9 @@ public class JdbcConfiguration {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
 
         dataSource.setDriverClassName("org.postgresql.Driver");
-        dataSource.setUrl("");
-        dataSource.setUsername("");
-        dataSource.setPassword("");
+        dataSource.setUrl("jdbc:postgresql://10.3.0.70:5432/practice_2023_dropmefiles");
+        dataSource.setUsername("students");
+        dataSource.setPassword("9V1$2x37c9V*b0");
 
         return dataSource;
     }
