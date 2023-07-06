@@ -27,12 +27,9 @@ public class UploadController {
         return documentRepository.add(fileEntity);
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.POST, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @RequestMapping(value = "/", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
     public FileEntity GetOneFile(@RequestParam String path) throws IOException {
-
         return documentRepository.query(path);
-
-
     }
 
     @GetMapping(value = "/files", produces = {MediaType.APPLICATION_JSON_VALUE})
