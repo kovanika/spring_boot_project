@@ -26,7 +26,7 @@ public class MinIODocumentRepository implements  DocumentRepository{
     }
 
     @Override
-    public FileEntity query(String path) throws IOException {
+    public FileEntity query(FileEntity fileEntity) throws IOException {
         return null;
     }
 }

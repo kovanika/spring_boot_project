@@ -12,6 +12,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class FileSystemDocumentRepository implements DocumentRepository{
+    private String PATH = "/tmp";
+
     @Override
     public String add(FileEntity fileEntity) throws IOException {
         File file = new File("C:\\Users\\user\\Desktop\\files\\" + fileEntity.getOriginalName());
@@ -49,10 +51,12 @@ public class FileSystemDocumentRepository implements DocumentRepository{
     }
 
     @Override
-    public FileEntity query(String path) throws IOException {
-        FileEntity fileEntity = new FileEntity();
-        fileEntity.setOriginalName(path);
-        fileEntity.setFile(Files.readAllBytes(Paths.get(path)));
+    public FileEntity query(FileEntity fileEntity) throws IOException {
+        Path path = Paths.get(PATH, fileEntity.getName());
+        if(!Files.exists(path)){
+            throw  new FileNotFoundException("Файл не найден");
+        }
+        fileEntity.setFile(Files.readAllBytes(path));
 
         return fileEntity;
     }
