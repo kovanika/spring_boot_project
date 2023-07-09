@@ -1,6 +1,6 @@
 package com.example.spring_boot_project;
 
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 
 public class FileEntity {
     public FileEntity(){
@@ -9,6 +9,16 @@ public class FileEntity {
     private String name;
     private String originalName;
     private String email;
+
+    private int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public int setId(int id) {
+        this.id = id;
+    }
 
     public String getOriginalName() {
         return originalName;

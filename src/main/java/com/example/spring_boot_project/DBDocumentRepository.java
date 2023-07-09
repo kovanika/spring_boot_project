@@ -35,17 +35,17 @@ public class DBDocumentRepository implements DocumentRepository{
 
     @Override
     public void update(FileEntity updatedFile ) {
-        return jdbcTemplate.update("UPDATE file SET name=?, data=? WHERE id=?", updatedFile.getOriginalName(), updatedFile.getFile(), id );
+        return jdbcTemplate.update("UPDATE file SET name=?, data=? WHERE id=?", updatedFile.getOriginalName(), updatedFile.getFile(), updatedFile.getId() );
     }
 
     @Override
     public void remove(FileEntity file) {
-        jdbcTemplate.update("DELETE FROM file WHERE id=?", id);
+        jdbcTemplate.update("DELETE FROM file WHERE id=?", file.getId());
     }
 
     @Override
     public List<FileEntity> queryAll() throws IOException {
-        return jdbcTemplate.query("SELECT * FROM file", new BeanPropertyRowMapper<>(File.class));
+        return jdbcTemplate.query("SELECT * FROM file", new FileMapper());
     }
 
     @Override
