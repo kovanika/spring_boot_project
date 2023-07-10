@@ -8,15 +8,21 @@ import javax.sql.DataSource;
 
 @Configuration
 public class JdbcConfiguration {
+    private AppProperties properties;
+
+    public JdbcConfiguration(AppProperties properties) {
+        this.properties = properties;
+    }
+
     @Bean
     public DataSource dataSource()
     {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
 
-        dataSource.setDriverClassName("org.postgresql.Driver");
-        dataSource.setUrl("jdbc:postgresql://10.3.0.70:5432/practice_2023_dropmefiles");
-        dataSource.setUsername("students");
-        dataSource.setPassword("9V1$2x37c9V*b0");
+        dataSource.setDriverClassName(properties.driverClassName());
+        dataSource.setUrl(properties.url());
+        dataSource.setUsername(properties.userName());
+        dataSource.setPassword(properties.password());
 
         return dataSource;
     }

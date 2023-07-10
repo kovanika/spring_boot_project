@@ -23,7 +23,7 @@ public class UploadController {
     @RequestMapping(value = "/file", method = RequestMethod.POST, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public String saveFile(@RequestParam String name, @RequestParam String email,
                                            @RequestParam MultipartFile document) throws IOException, OperationNotSupportedException {
-        if(document.isEmpty() || name.isEmpty() || email.isEmpty()){
+        if(document==null || document.isEmpty() || name.isEmpty() || email.isEmpty()){
             throw new RuntimeException( "Empty fields or file");
         }
 
