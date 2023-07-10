@@ -19,8 +19,8 @@ public class DBDocumentRepository implements DocumentRepository{
 
     @Override
     public String add(FileEntity file) throws OperationNotSupportedException {
-        var fe = jdbcTemplate.queryForObject("INSERT INTO FILE VALUES (?, ?, ?)", new Object[]{file.getOriginalName(), file.getFile(), file.getEmail()}, new FileMapper());
-        return fe.getName();
+        var fe = jdbcTemplate.queryForObject("INSERT INTO FILE (name_file, data, email) VALUES (?, ?, ?) returning *", new Object[]{file.getOriginalName(), file.getFile(), file.getEmail()}, new FileMapper());
+        return fe.getOriginalName();
     }
 
     @Override

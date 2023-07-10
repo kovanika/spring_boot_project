@@ -12,7 +12,7 @@ public class FileMapper implements RowMapper<FileEntity> {
         FileEntity fileEntity = new FileEntity();
 
         fileEntity.setId(resultSet.getInt("id"));
-        fileEntity.setOriginalName(resultSet.getString("name"));
+        fileEntity.setOriginalName(resultSet.getString("name_file"));
         fileEntity.setFile(resultSet.getBytes("data"));
         fileEntity.setEmail(resultSet.getString("email"));
         return fileEntity;
