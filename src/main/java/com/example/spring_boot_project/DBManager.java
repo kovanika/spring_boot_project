@@ -2,6 +2,8 @@ package com.example.spring_boot_project;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -19,28 +21,24 @@ import java.util.function.Function;
 
 @Component
 public class DBManager {
-    @Value("${database.url}")
-    private String url;
-    @Value("${database.userName}")
-    private String userName;
-    @Value("${database.password}")
-    private String password;
-    private Properties properties;
 
-    private String PATH = "/tmp";
+    private final HikariDataSource dataSource;
 
-    private HikariDataSource dataSource;
+    public DBManager(AppProperties appProperties) {
+        //    @Value("${database.url}")
+        //    private String url;
+        //    @Value("${database.userName}")
+        //    private String userName;
+        //    @Value("${database.password}")
+        //    private String password;
 
-    public DBManager(){
         HikariConfig config = new HikariConfig();
-        config.setJdbcUrl(url);
-        config.setUsername(userName);
-        config.setPassword(password);
+        config.setJdbcUrl(appProperties.url());
+        config.setUsername(appProperties.username());
+        config.setPassword(appProperties.password());
+        config.setDriverClassName("org.postgresql.Driver");
 
         dataSource = new HikariDataSource(config);
-    }
-
-    public void init(){
     }
 
     private PreparedStatement prepare(PreparedStatement statement, Object[] params) throws SQLException {
@@ -81,8 +79,8 @@ public class DBManager {
 
 
 
+    @PreDestroy
     public void destroy(){
-        //TODO
-        //close connection
+        dataSource.close();
     }
 }

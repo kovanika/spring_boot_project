@@ -18,18 +18,12 @@ import java.util.concurrent.Callable;
 
 @Component
 public class DBDocumentRepository implements DocumentRepository{
-    private String url = "jdbc:postgresql://10.3.0.70:5432/practice_2023_dropmefiles";
-    private Properties properties;
-
-    private String PATH = "/tmp";
+    private String PATH;
 
     @Autowired DBManager dbManager;
 
-    public DBDocumentRepository(){
-        properties = new Properties();
-        properties.setProperty("user", "students");
-        properties.setProperty("password", "9V1$2x37c9V*b0");
-
+    public DBDocumentRepository(DirectoryProperties directoryProperties){
+        PATH = directoryProperties.path();
     }
     @Override
     public String add(FileEntity file) throws OperationNotSupportedException, SQLException, IOException {

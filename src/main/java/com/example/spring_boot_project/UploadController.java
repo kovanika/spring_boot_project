@@ -3,6 +3,9 @@ package com.example.spring_boot_project;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.boot.context.event.ApplicationStartingEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,8 +22,18 @@ public class UploadController {
     @Autowired
     AppProperties appProperties;
 
-    @Autowired
-    private DocumentRepository documentRepository;
+    @EventListener(ApplicationReadyEvent.class)
+    public void start() {
+        System.out.println("HELLO");
+        System.out.println(appProperties.toString());
+    }
+
+
+    private final DocumentRepository documentRepository;
+
+    public UploadController(DocumentRepository documentRepository) {
+        this.documentRepository = documentRepository;
+    }
     @RequestMapping(value = "add/file", method = RequestMethod.POST, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public String saveFile(@RequestParam String name,
                                            @RequestParam MultipartFile document) throws IOException, OperationNotSupportedException, SQLException {
