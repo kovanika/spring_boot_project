@@ -14,7 +14,7 @@ public class FileMapper implements RowMapper<FileEntity> {
         fileEntity.setId(resultSet.getInt("id"));
         fileEntity.setOriginalName(resultSet.getString("name"));
         fileEntity.setFile(resultSet.getBytes("data"));
-
+        fileEntity.setEmail(resultSet.getString("email"));
         return fileEntity;
     }
 

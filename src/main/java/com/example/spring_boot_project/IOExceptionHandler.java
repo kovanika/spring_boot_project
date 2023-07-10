@@ -23,4 +23,10 @@ public class IOExceptionHandler extends ResponseEntityExceptionHandler {
         logger.error(e.getMessage(), e);
         return e.getMessage();
     }
+
+    @ExceptionHandler(value = {RuntimeException.class})
+    protected String defaultHandleConflict(RuntimeException e){
+        logger.error(e.getMessage(), e);
+        return e.getMessage();
+    }
 }

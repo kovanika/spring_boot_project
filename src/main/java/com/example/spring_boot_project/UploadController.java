@@ -15,7 +15,7 @@ public class UploadController {
     private static final Logger logger = LoggerFactory.getLogger(UploadController.class);
 
     private DocumentRepository documentRepository = new FileSystemDocumentRepository();
-    @RequestMapping(value = "/files", method = RequestMethod.POST, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @RequestMapping(value = "/file", method = RequestMethod.POST, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public String saveFile(@RequestParam String name, @RequestParam String email,
                                            @RequestParam MultipartFile document) throws IOException, OperationNotSupportedException {
         FileEntity fileEntity = new FileEntity();
