@@ -2,6 +2,7 @@ package com.example.spring_boot_project;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,15 +16,18 @@ import java.util.List;
 public class UploadController {
     private static final Logger logger = LoggerFactory.getLogger(UploadController.class);
 
-    private DocumentRepository documentRepository = new DBDocumentRepository();
-    @RequestMapping(value = "/files", method = RequestMethod.POST, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public String saveFile(@RequestParam String name, @RequestParam String email,
+    @Autowired
+    AppProperties appProperties;
+
+    @Autowired
+    private DocumentRepository documentRepository;
+    @RequestMapping(value = "add/file", method = RequestMethod.POST, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public String saveFile(@RequestParam String name,
                                            @RequestParam MultipartFile document) throws IOException, OperationNotSupportedException, SQLException {
         FileEntity fileEntity = new FileEntity();
         fileEntity.setFile(document.getBytes());
         fileEntity.setName(name);
         fileEntity.setOriginalName(document.getOriginalFilename());
-        fileEntity.setEmail(email);
 
         return documentRepository.add(fileEntity);
     }
@@ -33,7 +37,7 @@ public class UploadController {
         return documentRepository.query(fileEntity);
     }
 
-    @PostMapping(value = "/add/file")
+    @PostMapping(value = "/add/json-file")
     public String AddOneFile(@RequestBody FileEntity fileEntity) throws IOException, SQLException, OperationNotSupportedException {
         return documentRepository.add(fileEntity);
     }
