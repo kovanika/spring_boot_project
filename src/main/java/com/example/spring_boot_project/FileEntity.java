@@ -16,7 +16,8 @@ public class FileEntity {
         return id;
     }
 
-    public int setId(int id) {
+    public void setId(int id) {
+
         this.id = id;
     }
 
