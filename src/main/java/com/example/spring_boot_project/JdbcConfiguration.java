@@ -8,7 +8,7 @@ import javax.sql.DataSource;
 
 @Configuration
 public class JdbcConfiguration {
-    private AppProperties properties;
+    private final AppProperties properties;
 
     public JdbcConfiguration(AppProperties properties) {
         this.properties = properties;

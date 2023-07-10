@@ -38,7 +38,7 @@ public class DBDocumentRepository implements DocumentRepository{
         var s = jdbcTemplate.query("SELECT * FROM file", new FileMapper());
         if(s.isEmpty()){
 
-            throw new RuntimeException( "Files Not Found");
+            throw new RuntimeException("Files Not Found");
 
         }
 

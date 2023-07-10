@@ -11,9 +11,12 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class FileSystemDocumentRepository implements DocumentRepository{
+
+    private DirectoryProperties directoryProperties;
     @Override
     public String add(FileEntity fileEntity) throws IOException {
-        File file = new File("C:\\Users\\user\\Desktop\\files\\" + fileEntity.getOriginalName());
+        this.directoryProperties = directoryProperties;
+        File file = new File(directoryProperties.path() + fileEntity.getOriginalName());
         return Files.write(Paths.get(file.getAbsolutePath()), fileEntity.getFile()).toString();
     }
 
