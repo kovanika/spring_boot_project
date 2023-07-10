@@ -26,12 +26,13 @@ public class DBDocumentRepository implements DocumentRepository{
         if(Files.exists(Paths.get(PATH, file.getName()))){
             throw new FileIsAlreadyExistException("Файл с таким именем уже существует");
         }
+
+        Files.write(Paths.get(PATH, file.getName()), file.getFile());
+
         Connection conn = DriverManager.getConnection(url, properties);
         PreparedStatement statement = conn.prepareStatement("INSERT INTO file (name_file) VALUES (?);");
         statement.setString(1, file.getName());
         statement.executeUpdate();
-
-        Files.write(Paths.get(PATH, file.getName()), file.getFile());
 
         statement.close();
         conn.close();
