@@ -19,23 +19,22 @@ import java.util.List;
 @Component
 public class DBDocumentRepository implements DocumentRepository{
 
-    private final NamedParameterJdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
-    public DBDocumentRepository(NamedParameterJdbcTemplate jdbcTemplate){
+    public DBDocumentRepository(JdbcTemplate jdbcTemplate){
+
         this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
     public String add(FileEntity file) throws OperationNotSupportedException {
-        SqlParameterSource namedParameters = new MapSqlParameterSource()
-                .addValue("name", file.getName())
-                .addValue("data", file.getFile());
-       return jdbcTemplate.queryForObject("INSERT INTO FILE VALUES (:name, :data)", namedParameters, String.class);
+        var fe = jdbcTemplate.queryForObject("INSERT INTO FILE VALUES (?, ?)", new Object[]{file.getOriginalName(), file.getFile()}, new FileMapper());
+        return fe.getName();
     }
 
     @Override
-    public void update(FileEntity updatedFile ) {
-        return jdbcTemplate.update("UPDATE file SET name=?, data=? WHERE id=?", updatedFile.getOriginalName(), updatedFile.getFile(), updatedFile.getId() );
+    public void update(FileEntity updatedFile) {
+        jdbcTemplate.update("UPDATE file SET name= ?, data= ? WHERE id= ?", updatedFile.getOriginalName(), updatedFile.getFile(), updatedFile.getId() );
     }
 
     @Override
@@ -50,7 +49,7 @@ public class DBDocumentRepository implements DocumentRepository{
 
     @Override
     public FileEntity query(String path) throws IOException {
-        return jdbcTemplate.query("SELECT * FROM file WHERE id=?", id);
+        return jdbcTemplate.queryForObject("SELECT * FROM file WHERE name= ?", new Object[]{path}, new FileMapper());
     }
 
 
