@@ -5,7 +5,7 @@ public class UrlService {
     private static char[] allowedCharacters = allowedString.toCharArray();
     private static long base = allowedCharacters.length;
 
-    public String encode(long id){
+    public static String encode(long id){
         StringBuilder stringBuilder = new StringBuilder();
         if(id == 0){
             stringBuilder.append(allowedCharacters[0]);
