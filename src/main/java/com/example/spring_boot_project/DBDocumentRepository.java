@@ -23,10 +23,10 @@ public class DBDocumentRepository implements DocumentRepository {
     @Override
     public String add(FileEntity file) throws OperationNotSupportedException {
         var fe = jdbcTemplate.queryForObject("INSERT INTO FILE (name_file, data, email) VALUES (?, ?, ?) returning *", new Object[]{file.getOriginalName(), file.getFile(), file.getEmail()}, new FileMapper());
-        long id = fe.getId();
-        var fs = jdbcTemplate.update("UPDATE file SET short_url = ? WHERE id= ?", UrlService.encode(id), id );
+        String url = UrlService.encode(fe.getId());
+        var fs = jdbcTemplate.update("UPDATE file SET short_url = ? WHERE id= ?", url, fe.getId());
 
-        return null;
+        return url;
     }
 
     @Override
