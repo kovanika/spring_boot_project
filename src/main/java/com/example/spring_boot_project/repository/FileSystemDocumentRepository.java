@@ -1,11 +1,12 @@
-package com.example.spring_boot_project;
+package com.example.spring_boot_project.repository;
 
-import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Component;
+import com.example.spring_boot_project.FileEntity;
+import com.example.spring_boot_project.FileNotFoundException;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.stereotype.Repository;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -14,6 +15,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Repository
+@ConditionalOnProperty(
+        value="repository.type",
+        havingValue = "file",
+        matchIfMissing = false)
 public class FileSystemDocumentRepository implements DocumentRepository{
     private String PATH = "/tmp";
 

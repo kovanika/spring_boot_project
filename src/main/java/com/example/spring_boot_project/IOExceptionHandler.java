@@ -1,5 +1,6 @@
 package com.example.spring_boot_project;
 
+import jakarta.validation.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -29,9 +30,15 @@ public class IOExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.badRequest().body(e.getMessage());
     }
 
+
     @ExceptionHandler(value = {Exception.class})
     protected String defaultHandleConflict(Exception e){
         logger.error(e.getMessage(), e);
         return e.getMessage();
+    }
+
+    @ExceptionHandler(value = {ConstraintViolationException.class})
+    protected ResponseEntity<String> constraintViolationConflict(ConstraintViolationException e){
+        return ResponseEntity.status(400).body(e.getMessage());
     }
 }

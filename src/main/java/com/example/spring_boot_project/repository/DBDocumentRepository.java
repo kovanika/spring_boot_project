@@ -1,9 +1,8 @@
-package com.example.spring_boot_project;
+package com.example.spring_boot_project.repository;
 
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import com.example.spring_boot_project.*;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.stereotype.Repository;
 
 import javax.naming.OperationNotSupportedException;
 import java.io.IOException;
@@ -13,27 +12,31 @@ import java.nio.file.Paths;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
-import java.util.concurrent.Callable;
 
-@Component
+@ConditionalOnProperty(
+        value="repository.type",
+        havingValue = "db",
+        matchIfMissing = true)
+@Repository
 public class DBDocumentRepository implements DocumentRepository{
-    private String PATH;
 
-    @Autowired DBManager dbManager;
+    private final DBManager dbManager;
+    private final DirectoryProperties directoryProperties;
 
-    public DBDocumentRepository(DirectoryProperties directoryProperties){
-        PATH = directoryProperties.path();
+    public DBDocumentRepository(DBManager dbManager, DirectoryProperties directoryProperties) {
+        this.dbManager = dbManager;
+        this.directoryProperties = directoryProperties;
     }
+
     @Override
     public String add(FileEntity file) throws OperationNotSupportedException, SQLException, IOException {
-        if(Files.exists(Paths.get(PATH, file.getName()))){
+        if(Files.exists(Paths.get(directoryProperties.path(), file.getName()))){
             throw new FileIsAlreadyExistException("Файл с таким именем уже существует");
         }
 
-        Files.write(Paths.get(PATH, file.getName()), file.getFile());
+        Files.write(Paths.get(directoryProperties.path(), file.getName()), file.getFile());
 
-        dbManager.update("INSERT INTO file (name_file) VALUES (?);", new Object[]{file.getName()});
+        dbManager.update("INSERT INTO file (name_file, email) VALUES (?, ?);", new Object[]{file.getName(), file.getEmail()});
 
         return file.getName();
     }
@@ -48,7 +51,7 @@ public class DBDocumentRepository implements DocumentRepository{
 //            throw  new FileNotFoundException("Файл не найден");
 //        }
 
-        Path path = Paths.get(PATH, file.getName());
+        Path path = Paths.get(directoryProperties.path(), file.getName());
 
         if(!Files.exists(path)){
             throw  new FileNotFoundException("Файл не найден");
@@ -60,7 +63,7 @@ public class DBDocumentRepository implements DocumentRepository{
     public void remove(FileEntity file) throws SQLException, IOException {
         dbManager.update("DELETE FROM file WHERE name_file = ?;", new Object[]{file.getName()});
 
-        Files.deleteIfExists(Paths.get(PATH, file.getName()));
+        Files.deleteIfExists(Paths.get(directoryProperties.path(), file.getName()));
     }
 
     @Override
@@ -95,7 +98,7 @@ public class DBDocumentRepository implements DocumentRepository{
             while(resultSet.next()){
                 FileEntity fileEntity = new FileEntity();
                 fileEntity.setName(resultSet.getString("name_file"));
-                Path path = Paths.get(PATH, fileEntity.getName());
+                Path path = Paths.get(directoryProperties.path(), fileEntity.getName());
                 if(!Files.exists(path)){
                     throw  new FileNotFoundException("Файл не найден");
                 }
