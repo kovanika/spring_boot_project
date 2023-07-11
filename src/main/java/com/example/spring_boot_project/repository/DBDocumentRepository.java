@@ -36,7 +36,8 @@ public class DBDocumentRepository implements DocumentRepository{
 
         Files.write(Paths.get(directoryProperties.path(), file.getName()), file.getFile());
 
-        dbManager.update("INSERT INTO file (name_file, email) VALUES (?, ?);", new Object[]{file.getName(), file.getEmail()});
+        int id = dbManager.insert("INSERT INTO file (name_file, email) VALUES (?, ?);", new Object[]{file.getName(), file.getEmail()});
+        dbManager.update("UPDATE file SET short_url=? WHERE id=?;", new Object[]{URLGenerator.encode(id), id});
 
         return file.getName();
     }
@@ -97,6 +98,7 @@ public class DBDocumentRepository implements DocumentRepository{
         try{
             while(resultSet.next()){
                 FileEntity fileEntity = new FileEntity();
+                fileEntity.setUrl(resultSet.getString("short_url"));
                 fileEntity.setName(resultSet.getString("name_file"));
                 Path path = Paths.get(directoryProperties.path(), fileEntity.getName());
                 if(!Files.exists(path)){

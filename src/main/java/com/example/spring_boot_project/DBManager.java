@@ -61,7 +61,8 @@ public class DBManager {
         try(Connection connection = dataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);){
             prepare(preparedStatement, params);
-            var exec = preparedStatement.executeQuery();
+            preparedStatement.executeUpdate();
+            var exec = preparedStatement.getGeneratedKeys();
             if(exec.next()){
                 return exec.getInt("id");
             }

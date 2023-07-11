@@ -9,6 +9,15 @@ public class FileEntity {
     private String name;
     private String originalName;
     private String email;
+    private String url;
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
     public String getOriginalName() {
         return originalName;
