@@ -52,7 +52,6 @@ public class UploadController {
         fileEntity.setName(name);
         fileEntity.setOriginalName(document.getOriginalFilename());
         fileEntity.setEmail(email);
-
         return dbDocumentRepository.add(fileEntity);
     }
 

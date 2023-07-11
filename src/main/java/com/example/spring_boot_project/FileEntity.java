@@ -9,17 +9,27 @@ public class FileEntity {
     private String name;
     private String originalName;
     private String email;
+    private String shortUrl;
 
-    private int id;
+    public String getShortUrl() {
+        return shortUrl;
+    }
 
-    public int getId() {
+    public void setShortUrl(String shortUrl) {
+        this.shortUrl = shortUrl;
+    }
+
+    private long id;
+
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
 
         this.id = id;
     }
+
 
     public String getOriginalName() {
         return originalName;
