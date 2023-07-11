@@ -4,6 +4,7 @@ import javax.naming.OperationNotSupportedException;
 import java.io.IOException;
 import java.util.List;
 
+
 public interface DocumentRepository {
     String add(FileEntity file) throws IOException, OperationNotSupportedException;
     void update(FileEntity file);

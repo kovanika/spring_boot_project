@@ -1,5 +1,9 @@
 package com.example.spring_boot_project;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -10,12 +14,18 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Repository
+@ConditionalOnProperty(prefix = "repository", name = "type", havingValue = "file", matchIfMissing = false)
 public class FileSystemDocumentRepository implements DocumentRepository{
 
-    private DirectoryProperties directoryProperties;
+    private final DirectoryProperties directoryProperties;
+
+    public FileSystemDocumentRepository( DirectoryProperties directoryProperties) {
+        this.directoryProperties = directoryProperties;
+    }
+
     @Override
     public String add(FileEntity fileEntity) throws IOException {
-        this.directoryProperties = directoryProperties;
         File file = new File(directoryProperties.path() + fileEntity.getOriginalName());
         return Files.write(Paths.get(file.getAbsolutePath()), fileEntity.getFile()).toString();
     }
@@ -34,7 +44,7 @@ public class FileSystemDocumentRepository implements DocumentRepository{
     public List<FileEntity> queryAll() throws IOException {
         List<String> paths;
         List<byte[]> byteArrays = new ArrayList<byte[]>();
-        try(Stream<Path> stream = Files.walk(Paths.get("C:\\Users\\user\\Desktop\\files\\"))){
+        try(Stream<Path> stream = Files.walk(Paths.get(directoryProperties.path()))){
             paths = stream.filter(Files::isRegularFile).map(Path::toString).collect(Collectors.toList());
         }
         for(int i = 0; i < paths.size(); i++){

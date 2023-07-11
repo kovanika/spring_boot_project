@@ -1,14 +1,17 @@
 package com.example.spring_boot_project;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import javax.naming.OperationNotSupportedException;
 import java.io.IOException;
 import java.util.List;
 
-@Component
-public class DBDocumentRepository implements DocumentRepository{
+@Repository
+@ConditionalOnProperty(prefix = "repository", name = "type", havingValue = "db", matchIfMissing = true)
+public class DBDocumentRepository implements DocumentRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
