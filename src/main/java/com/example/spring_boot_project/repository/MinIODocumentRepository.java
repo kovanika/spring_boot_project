@@ -38,4 +38,9 @@ public class MinIODocumentRepository implements  DocumentRepository{
     public FileEntity query(FileEntity fileEntity) throws IOException {
         return null;
     }
+
+    @Override
+    public FileEntity get(String url) {
+        return null;
+    }
 }

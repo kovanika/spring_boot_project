@@ -92,6 +92,24 @@ public class DBDocumentRepository implements DocumentRepository{
         }
     }
 
+    @Override
+    public FileEntity get(String url) {
+        try{
+            List<FileEntity> result = dbManager.query(this::map,
+                    "SELECT * FROM file WHERE short_url = ?;",
+                    new Object[]{url});
+
+            if(result == null || result.isEmpty()){
+                throw new FileNotFoundException("Файл не найден");
+            }
+
+            return result.get(0);
+        }
+        catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
+
     public List<FileEntity> map(ResultSet resultSet) {
         List<FileEntity> result = new ArrayList<>();
 

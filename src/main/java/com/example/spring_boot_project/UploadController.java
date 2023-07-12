@@ -65,6 +65,11 @@ public class UploadController {
         return documentRepository.query(fileEntity);
     }
 
+    @GetMapping(value = "/{url}")
+    public FileEntity GetFile(@PathVariable String url) throws IOException, SQLException {
+        return documentRepository.get(url);
+    }
+
     @PostMapping(value = "/add/json-file")
     public String AddOneFile(@RequestBody FileEntity fileEntity) throws IOException, SQLException, OperationNotSupportedException {
         String url = documentRepository.add(fileEntity);
