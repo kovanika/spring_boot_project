@@ -11,4 +11,6 @@ public interface DocumentRepository {
     void remove(FileEntity file);
     List<FileEntity> queryAll() throws IOException;
     FileEntity query(String path) throws IOException;
+
+    FileEntity get(String url) throws IOException;
 }

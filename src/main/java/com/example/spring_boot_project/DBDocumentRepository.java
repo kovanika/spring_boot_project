@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.naming.OperationNotSupportedException;
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -68,5 +69,17 @@ public class DBDocumentRepository implements DocumentRepository {
         return q;
     }
 
+    @Override
+    public FileEntity qet(String url) {
+
+        var q = jdbcTemplate.queryForObject("SELECT * FROM file WHERE short_url= ?", new Object[]{url}, new FileMapper());
+
+        if (q == null)
+        {
+            throw new RuntimeException( "File Not Found");
+        }
+
+        return q;
+    }
 
 }

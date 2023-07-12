@@ -39,7 +39,7 @@ public class UploadController {
         this.dbDocumentRepository = dbDocumentRepository;
     }
 
-    @RequestMapping(value = "/file", method = RequestMethod.POST, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @RequestMapping(value = "add/file", method = RequestMethod.POST, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public String saveFile(@RequestParam String name, @NotNull @Email @RequestParam String email,
                                            @RequestParam MultipartFile document) throws IOException, OperationNotSupportedException {
 
@@ -58,13 +58,18 @@ public class UploadController {
         return dbDocumentRepository.add(fileEntity);
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(value = "find/file", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
     public FileEntity GetOneFile(@RequestParam String path) throws IOException {
         return dbDocumentRepository.query(path);
     }
 
-    @GetMapping(value = "/files", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(value = "find/files", produces = {MediaType.APPLICATION_JSON_VALUE})
     public List<FileEntity> getFiles() throws IOException {
         return dbDocumentRepository.queryAll();
+    }
+
+    @GetMapping(value = /{url})
+    public List<FileEntity> get(@PathVariable String url) throws IOException {
+        return dbDocumentRepository.get(url);
     }
 }
