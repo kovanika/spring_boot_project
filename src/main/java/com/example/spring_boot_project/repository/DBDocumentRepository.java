@@ -39,7 +39,7 @@ public class DBDocumentRepository implements DocumentRepository{
         int id = dbManager.insert("INSERT INTO file (name_file, email) VALUES (?, ?);", new Object[]{file.getName(), file.getEmail()});
         dbManager.update("UPDATE file SET short_url=? WHERE id=?;", new Object[]{URLGenerator.encode(id), id});
 
-        return file.getName();
+        return URLGenerator.encode(id);
     }
 
     @Override

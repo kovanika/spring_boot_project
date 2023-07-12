@@ -32,7 +32,6 @@ public class UploadController {
     @EventListener(ApplicationReadyEvent.class)
     public void start() {
         System.out.println(URLGenerator.decode("9b"));
-        service.sendMessage("hello");
     }
 
 
@@ -56,7 +55,9 @@ public class UploadController {
         fileEntity.setOriginalName(document.getOriginalFilename());
         fileEntity.setEmail(email);
 
-        return documentRepository.add(fileEntity);
+        String url =  documentRepository.add(fileEntity);
+        service.sendMessage(url);
+        return url;
     }
 
     @PostMapping(value = "/find/file")
@@ -66,7 +67,9 @@ public class UploadController {
 
     @PostMapping(value = "/add/json-file")
     public String AddOneFile(@RequestBody FileEntity fileEntity) throws IOException, SQLException, OperationNotSupportedException {
-        return documentRepository.add(fileEntity);
+        String url = documentRepository.add(fileEntity);
+        service.sendMessage(url);
+        return url;
     }
 
     @PostMapping(value = "update/file")
