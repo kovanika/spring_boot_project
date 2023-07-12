@@ -56,7 +56,7 @@ public class UploadController {
         fileEntity.setEmail(email);
 
         String url =  documentRepository.add(fileEntity);
-        service.sendMessage(url);
+        service.sendMessage(url, fileEntity.getEmail());
         return url;
     }
 
@@ -68,7 +68,6 @@ public class UploadController {
     @PostMapping(value = "/add/json-file")
     public String AddOneFile(@RequestBody FileEntity fileEntity) throws IOException, SQLException, OperationNotSupportedException {
         String url = documentRepository.add(fileEntity);
-        service.sendMessage(url);
         return url;
     }
 
