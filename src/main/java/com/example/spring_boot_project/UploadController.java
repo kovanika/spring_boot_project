@@ -2,7 +2,6 @@ package com.example.spring_boot_project;
 
 import com.example.spring_boot_project.repository.DocumentRepository;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,9 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.naming.OperationNotSupportedException;
 import java.io.*;
 import java.sql.SQLException;
-import java.util.InvalidPropertiesFormatException;
 import java.util.List;
-import java.util.regex.Pattern;
 
 @RestController
 @Validated
@@ -29,9 +26,13 @@ public class UploadController {
     @Autowired
     AppProperties appProperties;
 
+    @Autowired
+    MyEmailService service;
+
     @EventListener(ApplicationReadyEvent.class)
     public void start() {
         System.out.println(URLGenerator.decode("9b"));
+        service.sendMessage("hello");
     }
 
 
