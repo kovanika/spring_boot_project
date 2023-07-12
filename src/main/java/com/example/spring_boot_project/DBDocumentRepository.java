@@ -70,8 +70,7 @@ public class DBDocumentRepository implements DocumentRepository {
     }
 
     @Override
-    public FileEntity qet(String url) {
-
+    public FileEntity get(String url) throws IOException {
         var q = jdbcTemplate.queryForObject("SELECT * FROM file WHERE short_url= ?", new Object[]{url}, new FileMapper());
 
         if (q == null)

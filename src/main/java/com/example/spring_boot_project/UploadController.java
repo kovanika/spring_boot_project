@@ -68,8 +68,8 @@ public class UploadController {
         return dbDocumentRepository.queryAll();
     }
 
-    @GetMapping(value = /{url})
-    public List<FileEntity> get(@PathVariable String url) throws IOException {
+    @GetMapping(value = "/{url}")
+    public FileEntity get(@PathVariable String url) throws IOException {
         return dbDocumentRepository.get(url);
     }
 }
