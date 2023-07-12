@@ -1,5 +1,6 @@
 package com.example.spring_boot_project;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -13,6 +14,8 @@ import java.util.List;
 @ConditionalOnProperty(prefix = "repository", name = "type", havingValue = "db", matchIfMissing = true)
 public class DBDocumentRepository implements DocumentRepository {
 
+    @Autowired
+    EmailController service;
     private final JdbcTemplate jdbcTemplate;
 
     public DBDocumentRepository(JdbcTemplate jdbcTemplate){
@@ -25,7 +28,8 @@ public class DBDocumentRepository implements DocumentRepository {
         var fe = jdbcTemplate.queryForObject("INSERT INTO FILE (name_file, data, email) VALUES (?, ?, ?) returning *", new Object[]{file.getOriginalName(), file.getFile(), file.getEmail()}, new FileMapper());
         String url = UrlService.encode(fe.getId());
         var fs = jdbcTemplate.update("UPDATE file SET short_url = ? WHERE id= ?", url, fe.getId());
-
+        String email = file.getEmail();
+        service.sendMessage(email, url);
         return url;
     }
 
