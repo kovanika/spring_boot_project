@@ -56,7 +56,7 @@ public class UploadController {
         fileEntity.setEmail(email);
 
         String url =  documentRepository.add(fileEntity);
-        service.sendMessage(url, fileEntity.getEmail());
+        service.sendMessage("http://dropmefiles.com/" + url, "kovalienko.nikita.2002@gmail.com");
         return url;
     }
 
